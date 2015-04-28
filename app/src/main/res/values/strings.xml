@@ -1,0 +1,58 @@
+<resources>
+    <string name="mapia">mapia</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+        <string name="app_name">mapia</string>
+        <string name="item">Item #</string>
+        <string name="facebook_app_id">863112470402085</string>
+        <string name="facebook_app_sercret">b8933d06e9f58989affe30d39d4b29a9</string>
+        <string name="twitter_consumer_key">pgHFETv10XzCbdN9IEiFajszC</string>
+        <string name="twitter_consumer_secret">5QhB4AdyjrMp0zWhEWmIWap3JHm96IcMl5PFUMDBQvfrIAGMQi</string>
+        <string name="instagram_client_id">036d1554ace5461b973bf54e5c41f854</string>
+        <string name="instagram_client_secret">5b651079994e43b9aca4e248d9b9a148</string>
+        <string name="vk_app_id">4352648</string>
+        <!-- Error -->
+        <string name="error">Error!</string>
+        <string name="json_error">JSON Error!</string>
+        <string name="close">Close</string>
+        <!-- DialogsMain -->
+        <string name="message">Message</string>
+        <string name="title">Title</string>
+        <string name="progress">Progress</string>
+        <string name="ok">Okay</string>
+        <string name="set">Set</string>
+        <string name="cancel">Cancel</string>
+
+        <string name="progress_save_message">Saving</string>
+
+        <string name="social_facebook_button">{icon-facebook} Facebook login</string>
+        <string name="social_twitter_button">{icon-twitter} Twitter login</string>
+        <string name="social_google_button">{icon-gplus} G+ login</string>
+        <string name="social_instagram_button">{icon-instagram} Vk login</string>
+
+        <!-- Menu -->
+        <string name="menu_done_item">Done</string>
+        <string name="menu_list_item">List</string>
+        <string name="menu_photo">Photo</string>
+        <string name="menu_load">Load</string>
+        <string name="menu_save">Save</string>
+        <string name="menu_settings">Settings</string>
+        <string name="menu_delete_item">Delete</string>
+        <string name="menu_clear">Clear</string>
+        <string name="menu_erase">Erase</string>
+        <string name="menu_pencil">Pencil</string>
+        <string name="menu_color">Color</string>
+        <string name="menu_size">Size</string>
+        <string name="menu_refresh">Refresh</string>
+        <string name="menu_marker">markers</string>
+        <string name="menu_share_widget">Share</string>
+        <string name="menu_share">Share</string>
+        <string name="action_settings">Options</string>
+        <string name="hello_blank_fragment">Hello blank fragment</string>
+        <string name="divider">Divider</string>
+        <string name="delete_friend">Remove friend</string>
+        <string name="add_friend">Invite</string>
+        <string name="search_friend">Search</string>
+
+</resources>
