@@ -1,7 +1,6 @@
 package com.mapia;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,31 +13,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.apache.http.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
-public class SignupActivity extends Activity {
-
-
+public class SignupActivity extends Activity implements OnClickListener {
     public final static String mytag = "test";
-    EditText edtID, edtPW, edtPWCheck;
-    ImageView imgIDStatus, imgPWStatus, imgPWCheckStatus;
-    TextView txtClause;
-    Button btnSignup;
-    Boolean flagIDDup = false, flagIDStatus = false, flagPWStatus = false, flagPWCheckStatus = false;
+    private EditText edtID, edtPW, edtPWCheck;
+    private ImageView imgIDStatus, imgPWStatus, imgPWCheckStatus;
+    private TextView txtClause;
+    private Button btnSignup;
+    private Button btnCancel;
+    private Boolean flagIDDup = false, flagIDStatus = false, flagPWStatus = false, flagPWCheckStatus = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(com.mapia.R.layout.activity_signup);
         Log.i("SignupActivity","SignupActivity Load");
 
@@ -50,9 +53,12 @@ public class SignupActivity extends Activity {
         imgPWCheckStatus = (ImageView)findViewById(com.mapia.R.id.imgPWCheckStatus);
         txtClause = (TextView)findViewById(com.mapia.R.id.txtClause);
         txtClause.setMovementMethod(new ScrollingMovementMethod());
-        Log.i("SignupActivity","txtClause's text : "+txtClause.getText().toString());
-        btnSignup = (Button)findViewById(com.mapia.R.id.btnSignup);
-        Log.i("SignupActivity","btnSignup's text : "+btnSignup.getText().toString());
+        btnSignup = (Button)findViewById(R.id.btnSignup);
+        btnCancel = (Button)findViewById(R.id.btnCancel);
+
+
+        btnSignup.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
 
         edtID.addTextChangedListener(new TextWatcher() {
             @Override
@@ -137,6 +143,7 @@ public class SignupActivity extends Activity {
                 }
             }
         });
+
         edtPWCheck.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -159,68 +166,111 @@ public class SignupActivity extends Activity {
                 }
             }
         });
-        btnSignup.setOnClickListener (new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("SignupActivity", "btnSignup clicked");
-                // request New User
-                int result = 1;
-                if (flagIDStatus == false) result = 2;
-                else if (flagPWStatus == false) result = 3;
-                else if (flagPWCheckStatus == false) result = 4;
-                else if (flagIDDup == true) result = 5;
-                switch (result) {
-                    case 1:           // No-Error : OK
-//						/* put user data */
-                        try {
-                            JSONObject jsonParams = new JSONObject();
-                            jsonParams.put("userid", edtID.getText().toString());
-                            jsonParams.put("password", edtPW.getText().toString());
-                            StringEntity entity = new StringEntity(jsonParams.toString());
-                            Context context = null;
-                            AsyncHTTP.post(context,"auth/signup", entity, "application/json", new JsonHttpResponseHandler() {
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                    // If the response is JSONObject instead of expected JSONArray
-                                    try {
-                                        Log.i("code", response.toString());
 
-                                        if(response.get("code").toString().compareTo("201")==0){
-                                            Log.i("hi",response.get("token").toString());
-                                            Intent i = new Intent(SignupActivity.this, SNSActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    } catch (Exception e) {
-                                        Log.i("JSON", e.getMessage());
-                                    }
-                                }
-                            });
+//
+//
+//        btnSignup.setOnClickListener (new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                Log.i("SignupActivity", "btnSignup clicked");
+//                // request New User
+//                int result = 1;
+//                if (flagIDStatus == false) result = 2;
+//                else if (flagPWStatus == false) result = 3;
+//                else if (flagPWCheckStatus == false) result = 4;
+//                else if (flagIDDup == true) result = 5;
+//                switch (result) {
+//                    case 1:           // No-Error : OK
+////						/* put user data */
+//                        try {
+//                            JSONObject jsonParams = new JSONObject();
+//                            jsonParams.put("userid", edtID.getText().toString());
+//                            jsonParams.put("password", edtPW.getText().toString());
+//                            StringEntity entity = new StringEntity(jsonParams.toString());
+//                            Context context = null;
+//                            AsyncHTTP.post(context,"auth/signup", entity, "application/json", new JsonHttpResponseHandler() {
+//                                @Override
+//                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                                    // If the response is JSONObject instead of expected JSONArray
+//                                    try {
+//                                        Log.i("code", response.toString());
+//
+//                                        if(response.get("code").toString().compareTo("201")==0){
+//                                            Log.i("hi",response.get("token").toString());
+//                                            Intent i = new Intent(SignupActivity.this, SNSActivity.class);
+//                                            startActivity(i);
+//                                            finish();
+//                                        }
+//                                    } catch (Exception e) {
+//                                        Log.i("JSON", e.getMessage());
+//                                    }
+//                                }
+//                            });
+//
+//                        } catch (JSONException e) {
+//                            Log.i("JSON",e.getMessage());
+//                        } catch (UnsupportedEncodingException e){
+//                            Log.i("Unsupported", e.getMessage());
+//                        }
+//                        break;
+//                    case 2:
+//                        Log.i("SignupActivity", "flagIDStatus : false");
+//                        break;
+//                    case 3:
+//                        Log.i("SignupActivity", "flagPWStatus : false");
+//                        break;
+//                    case 4:
+//                        Log.i("SignupActivity", "flagPWCheckStatus : false");
+//                        break;
+//                    case 5:
+//                        Log.i("SignupActivity", "flagIDDup : true");
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
+    }
 
-                        } catch (JSONException e) {
-                            Log.i("JSON",e.getMessage());
-                        } catch (UnsupportedEncodingException e){
-                            Log.i("Unsupported", e.getMessage());
-                        }
-                        break;
-                    case 2:
-                        Log.i("SignupActivity", "flagIDStatus : false");
-                        break;
-                    case 3:
-                        Log.i("SignupActivity", "flagPWStatus : false");
-                        break;
-                    case 4:
-                        Log.i("SignupActivity", "flagPWCheckStatus : false");
-                        break;
-                    case 5:
-                        Log.i("SignupActivity", "flagIDDup : true");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSignup:
+                String id = edtID.getText().toString();
+                String password = edtPW.getText().toString();
+                RestRequestHelper requestHelper =
+                        RestRequestHelper.newInstance();
+
+                requestHelper.signUp(id, password,
+                        new Callback<JsonObject>() {
+                            @Override
+                            public void success(JsonObject jsonObject,
+                                                Response response) {
+                                String resultMessage =
+                                        jsonObject.get("message").toString();
+                                Toast.makeText(SignupActivity.this,
+                                        resultMessage, Toast.LENGTH_LONG).show();
+
+                                Intent i = new Intent(SignupActivity.this, SNSActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(SignupActivity.this, "회원가입 실패"
+                                        .toString(), Toast.LENGTH_LONG).show();
+                                error.printStackTrace();
+                            }
+                        });
+
+                break;
+            case R.id.btnCancel:
+                finish();
+                break;
+
+        }
     }
 }
 

@@ -41,6 +41,7 @@ public class MapActivity extends FragmentActivity implements OnClickListener {
         transaction.commit();
     }
 
+
     private Fragment getFragment(int index) {
         Fragment newFragment = null;
         switch(index){

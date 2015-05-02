@@ -12,7 +12,7 @@ import org.apache.http.entity.StringEntity;
  * Created by daehyun on 2015. 4. 4..
  */
 public class AsyncHTTP {
-    private static final String BASE_URL = "http://api.mapeen.com/";
+    private static final String BASE_URL = "http://54.65.32.198:8080/";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

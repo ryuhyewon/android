@@ -18,7 +18,6 @@
             android:label="@string/mapia" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,11 +33,7 @@
             android:name="com.mapia.SNSActivity"
             android:theme="@style/Theme.AppCompat"
             android:label="SNSActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+         </activity>
 
         <activity android:name="com.mapia.asne.core.OAuthActivity" />
 

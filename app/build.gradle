@@ -33,5 +33,7 @@ dependencies {
     compile 'com.github.asne:asne-linkedin:0.3.1'
     compile 'com.github.asne:asne-twitter:0.3.1'
     compile 'com.squareup.picasso:picasso:2.2.+'
+    compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'com.google.code.gson:gson:2.3.1'
 
 }
