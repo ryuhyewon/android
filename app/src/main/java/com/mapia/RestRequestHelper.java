@@ -1,11 +1,13 @@
 package com.mapia;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.http.Path;
 
 
 public class RestRequestHelper {
@@ -72,6 +75,9 @@ public class RestRequestHelper {
         @GET("/auth/profile")
         void profile(Callback<JsonObject> callback);
 
+        @GET("/post")
+        void posts(Callback<JsonObject> callback, String url);
+
     }
 
     public void signUp(String id, String password, Callback<JsonObject> callback) {
@@ -106,6 +112,10 @@ public class RestRequestHelper {
 
     public void profile(Callback<JsonObject> callback) {
         restRequest.profile(callback);
+    }
+
+    public void posts(Callback<JsonObject> callback, String url){
+        restRequest.posts(callback, url);
     }
 
 }
