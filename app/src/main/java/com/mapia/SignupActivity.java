@@ -33,7 +33,6 @@ public class SignupActivity extends Activity implements OnClickListener {
     private ImageView imgIDStatus, imgPWStatus, imgPWCheckStatus;
     private TextView txtClause;
     private Button btnSignup;
-    private Button btnCancel;
     private Boolean flagIDDup = false, flagIDStatus = false, flagPWStatus = false, flagPWCheckStatus = false;
 
 
@@ -54,11 +53,9 @@ public class SignupActivity extends Activity implements OnClickListener {
         txtClause = (TextView)findViewById(com.mapia.R.id.txtClause);
         txtClause.setMovementMethod(new ScrollingMovementMethod());
         btnSignup = (Button)findViewById(R.id.btnSignup);
-        btnCancel = (Button)findViewById(R.id.btnCancel);
 
 
         btnSignup.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
 
         edtID.addTextChangedListener(new TextWatcher() {
             @Override
@@ -266,10 +263,6 @@ public class SignupActivity extends Activity implements OnClickListener {
                         });
 
                 break;
-            case R.id.btnCancel:
-                finish();
-                break;
-
         }
     }
 }

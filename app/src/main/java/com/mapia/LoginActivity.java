@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.mapia.map.MapActivity;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
