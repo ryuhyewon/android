@@ -1,7 +1,10 @@
 package com.mapia;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -69,14 +72,25 @@ public class RestRequestHelper {
         void login(@Body UserJsonRequest userJO,
                    Callback<JsonObject> callback);
 
+        @POST("/post")
+        @Headers({ "Content-Type: application/json;charset=UTF-8"})
+        void posts(@Body PostJsonRequest postJO,
+                   Callback<JsonObject> callback);
+
         @GET("/auth/login")
         void login(Callback<JsonObject> callback);
 
         @GET("/auth/profile")
         void profile(Callback<JsonObject> callback);
 
-        @GET("/post")
-        void posts(Callback<JsonObject> callback, String url);
+        @GET("/post?type={map-type}&lat={center-latitude}&lng={center-longitude}&level={map-level}")
+        void posts(Callback<JsonArray> callback, @Path("map-type") String mapType,
+                   @Path("center-latitude")double lat, @Path("center-longitude")double lng,
+                   @Path("map-level")float level);
+        @GET("/post?type={map-type}&(group={group-id})&lat={center-latitude}&lng={center-longitude}&level={map-level}")
+        void posts(Callback<JsonArray> callback, @Path("map-type") String mapType, @Path("group-id") int groupID,
+                   @Path("center-latitude")double lat, @Path("center-longitude")double lng,
+                   @Path("map-level")float level);
 
     }
 
@@ -110,12 +124,25 @@ public class RestRequestHelper {
         restRequest.login(userJO, callback);
     }
 
+    public void posts(String content, LatLng latlng, Callback<JsonObject> callback){
+        PostJsonRequest postJO = null;
+        try{
+            postJO = new PostJsonRequest(content, latlng);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        restRequest.posts(postJO, callback);
+    }
+
     public void profile(Callback<JsonObject> callback) {
         restRequest.profile(callback);
     }
 
-    public void posts(Callback<JsonObject> callback, String url){
-        restRequest.posts(callback, url);
+    public void posts(Callback<JsonArray> callback, String mapType, double lat, double lng, float level){
+        restRequest.posts(callback, mapType, lat, lng, level);
+    }
+    public void posts(Callback<JsonArray> callback, String mapType, int groupID, double lat, double lng, float level){
+        restRequest.posts(callback, mapType, groupID, lat, lng, level);
     }
 
 }
@@ -140,6 +167,16 @@ class RestCookieManager extends CookieManager {
     }
 }
 
+class PostJsonRequest{
+    final String content;
+    final double lat, lng;
+
+    PostJsonRequest(String content, LatLng latlng){
+        this.content = content;
+        this.lat = latlng.latitude;
+        this.lng = latlng.longitude;
+    }
+}
 
 class UserJsonRequest {
     final String username;

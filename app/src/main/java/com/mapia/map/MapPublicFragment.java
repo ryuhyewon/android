@@ -10,7 +10,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mapia.R;
+import com.mapia.RestRequestHelper;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MapPublicFragment extends MapFragment {
 	
@@ -28,24 +35,45 @@ public class MapPublicFragment extends MapFragment {
 		getActivity().getWindow().addContentView(relLayout, paramrel);
 		Toast.makeText(getActivity().getApplicationContext(), "PublicFragment", Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
-		markerDatas = getMarker();
 		super.onResume();
-		/*for(int i=0;i<markerDatas.size();i++){
+		for(int i=0;i<markerDatas.size();i++){
 			markerDatas.get(i).marker.remove();
 		}
 		markerDatas.clear();
-		markerDatas = getMarker();
-		drawMarker(markerDatas);*/
+		getMarker();
+		drawMarker(markerDatas);
 	}
-	
-	private ArrayList<MarkerData> getMarker() {
-		ArrayList<MarkerData> markerList = new ArrayList<MarkerData>();
-		markerList.add(new MarkerData(new LatLng(0, 0)));
-		markerList.add(new MarkerData(new LatLng(0, 40)));
-		return markerList;
+
+	private void getMarker() {
+		final ArrayList<MarkerData> markerList = new ArrayList<MarkerData>();
+		try {
+			RestRequestHelper requestHelper = RestRequestHelper.newInstance();
+
+			requestHelper.posts(new Callback<JsonArray>() {
+				@Override
+				public void success(JsonArray jsonArray, Response response) {
+					Toast.makeText(getActivity(),"Public 글 읽어오기 성공".toString(), Toast.LENGTH_LONG).show();
+					for(int i=0;i<jsonArray.size();i++){
+						JsonObject jsonObject = (JsonObject)jsonArray.get(i);
+						MarkerData markerData = new MarkerData(new LatLng(jsonObject.get("lat").getAsDouble(),jsonObject.get("lng").getAsDouble()));
+						markerList.add(markerData);
+					}
+					markerDatas = markerList;
+					drawMarker(markerDatas);
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					Toast.makeText(getActivity(),"글 읽어오기실패".toString(), Toast.LENGTH_LONG).show();
+					error.printStackTrace();
+				}
+			},"private",this.cameraLatlng.latitude, this.cameraLatlng.longitude, this.cameraZoom);
+		}  catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
