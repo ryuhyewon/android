@@ -18,19 +18,21 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFollowFragment extends MapFragment {
-	
+public class MapGroupFragment extends MapFragment {
+
+	int currentGroupNumber = 0; // currentGroupNumber 수정
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		this.type_num = 3;
+		this.type_num = 4;
 		LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		RelativeLayout relLayout = (RelativeLayout)inflater.inflate(R.layout.overview_map_follow, null);
+		RelativeLayout relLayout = (RelativeLayout)inflater.inflate(R.layout.overview_map_group, null);
 		RelativeLayout.LayoutParams paramrel = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
 		getActivity().getWindow().addContentView(relLayout, paramrel);
-		Toast.makeText(getActivity().getApplicationContext(), "FollowFragment", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity().getApplicationContext(), "GroupFragment", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class MapFollowFragment extends MapFragment {
 			requestHelper.posts(new Callback<JsonArray>() {
 				@Override
 				public void success(JsonArray jsonArray, Response response) {
-					Toast.makeText(getActivity(),"Follow 글 읽어오기 성공".toString(), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(),"Group 글 읽어오기 성공".toString(), Toast.LENGTH_LONG).show();
 					for(int i=0;i<jsonArray.size();i++){
 						JsonObject jsonObject = (JsonObject)jsonArray.get(i);
 						MarkerData markerData = new MarkerData(new LatLng(jsonObject.get("lat").getAsDouble(),
@@ -69,7 +71,7 @@ public class MapFollowFragment extends MapFragment {
 					Toast.makeText(getActivity(),"글 읽어오기실패".toString(), Toast.LENGTH_LONG).show();
 					error.printStackTrace();
 				}
-			},"private",MapActivity.cameraLatlng.latitude, MapActivity.cameraLatlng.longitude, MapActivity.cameraZoom);
+			},"private", this.currentGroupNumber, MapActivity.cameraLatlng.latitude, MapActivity.cameraLatlng.longitude, MapActivity.cameraZoom);
 		}  catch (Exception e) {
 			e.printStackTrace();
 		}

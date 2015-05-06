@@ -14,9 +14,9 @@ public class MapActivity extends FragmentActivity implements OnClickListener {
 
 	int currentFragmentIndex;
 
-	public LatLng currentLatlng;
-	public LatLng cameraLatlng;
-	public float cameraZoom = 15;
+	public static LatLng currentLatlng;
+	public static LatLng cameraLatlng;
+	public static float cameraZoom = 15;
 	Button btn1, btn2, btn3, btn4;
 	MapPrivateFragment mapPrivateFragment = null;
 	MapPublicFragment mapPublicFragment = null;

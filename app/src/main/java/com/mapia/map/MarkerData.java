@@ -23,6 +23,11 @@ class MarkerData{
         this.location = location;
         this.time = time;
         this.letter = letter;
-        this.isNew = true;
+    }
+
+    public MarkerData(LatLng location, String letter){
+        super();
+        this.location = location;
+        this.letter = letter;
     }
 }

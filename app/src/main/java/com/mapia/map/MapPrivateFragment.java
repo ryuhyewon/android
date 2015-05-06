@@ -57,7 +57,8 @@ public class MapPrivateFragment extends MapFragment{
 					Toast.makeText(getActivity(),"Private 글 읽어오기 성공".toString(), Toast.LENGTH_LONG).show();
 					for(int i=0;i<jsonArray.size();i++){
 						JsonObject jsonObject = (JsonObject)jsonArray.get(i);
-						MarkerData markerData = new MarkerData(new LatLng(jsonObject.get("lat").getAsDouble(),jsonObject.get("lng").getAsDouble()));
+						MarkerData markerData = new MarkerData(new LatLng(jsonObject.get("lat").getAsDouble(),
+								jsonObject.get("lng").getAsDouble()), jsonObject.get("content").getAsString());
 						markerList.add(markerData);
 					}
 					markerDatas = markerList;
@@ -69,7 +70,7 @@ public class MapPrivateFragment extends MapFragment{
 					Toast.makeText(getActivity(),"글 읽어오기실패".toString(), Toast.LENGTH_LONG).show();
 					error.printStackTrace();
 				}
-			},"private",this.cameraLatlng.latitude, this.cameraLatlng.longitude, this.cameraZoom);
+			},"private",MapActivity.cameraLatlng.latitude, MapActivity.cameraLatlng.longitude, MapActivity.cameraZoom);
 		}  catch (Exception e) {
 			e.printStackTrace();
 		}

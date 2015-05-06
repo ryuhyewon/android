@@ -33,6 +33,10 @@ import retrofit.client.Response;
 
 public class MapFragment extends Fragment implements OnClickListener, LocationListener, OnMapClickListener, GoogleMap.OnCameraChangeListener{
 
+
+	/*protected LatLng currentLatlng;
+	protected LatLng cameraLatlng;
+	protected float cameraZoom = 15;*/
 	ImageButton btnLocCurrent;
 	protected int type_num;
 	private String[] type_string = {"","Private","Public","Follow","Group"};
@@ -63,7 +67,7 @@ public class MapFragment extends Fragment implements OnClickListener, LocationLi
 
 	@Override
 	public void onResume() {
-		if(currentLatlng!=null) this.backgroundMap.moveCamera((CameraUpdate)CameraUpdateFactory.newLatLngZoom(currentLatlng, cameraZoom));
+		if(MapActivity.currentLatlng!=null) this.backgroundMap.moveCamera((CameraUpdate)CameraUpdateFactory.newLatLngZoom(MapActivity.cameraLatlng, MapActivity.cameraZoom));
 		drawMarker(markerDatas);
 		super.onResume();
 	}
@@ -77,17 +81,17 @@ public class MapFragment extends Fragment implements OnClickListener, LocationLi
 	public void onClick(View v) {
 		switch(v.getId()){
 			case R.id.btnLocCurrent:
-				if(currentLatlng!=null) this.backgroundMap.moveCamera((CameraUpdate)CameraUpdateFactory.newLatLngZoom(currentLatlng, cameraZoom));
+				if(MapActivity.currentLatlng!=null) this.backgroundMap.moveCamera((CameraUpdate)CameraUpdateFactory.newLatLngZoom(MapActivity.currentLatlng, MapActivity.cameraZoom));
 				break;
 		}
 		// TODO Auto-generated method stub
 	}
 	@Override
 	public void onLocationChanged(Location location) {
-		this.currentLatlng = new LatLng(location.getLatitude(), location.getLongitude());
+		MapActivity.currentLatlng = new LatLng(location.getLatitude(), location.getLongitude());
 		if (cameraMoveWhenCreate == false) {
-			if (currentLatlng != null)
-				this.backgroundMap.animateCamera((CameraUpdate) CameraUpdateFactory.newLatLngZoom(currentLatlng, cameraZoom));
+			if (MapActivity.cameraLatlng != null)
+				this.backgroundMap.animateCamera((CameraUpdate) CameraUpdateFactory.newLatLngZoom(MapActivity.currentLatlng, MapActivity.cameraZoom));
 			cameraMoveWhenCreate = true;
 		}
 		//locationManager.removeUpdates(this);
@@ -128,7 +132,7 @@ public class MapFragment extends Fragment implements OnClickListener, LocationLi
 
 	@Override
 	public void onCameraChange(CameraPosition cameraPosition) {
-		this.cameraLatlng = cameraPosition.target;
-		this.cameraZoom = cameraPosition.zoom;
+		MapActivity.cameraLatlng = cameraPosition.target;
+		MapActivity.cameraZoom = cameraPosition.zoom;
 	}
 }
